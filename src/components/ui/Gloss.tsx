@@ -39,11 +39,15 @@ function Term({ term, meaning, align, focusable, className }: { term: string; me
       >
         {term}
       </abbr>
+      <span className="sr-only"> ({meaning})</span>
+      {/* Hidden with display:none (not opacity) so an off-screen tooltip can't cause page scroll. */}
       <span
-        role="tooltip"
+        aria-hidden
         className={cn(
-          "pointer-events-none absolute top-full z-30 mt-1.5 w-max max-w-64 rounded-md bg-fg px-2.5 py-1.5 text-left text-sm font-medium normal-case leading-snug tracking-normal text-bg shadow-lg",
-          "opacity-0 transition-opacity duration-100 group-hover/gloss:opacity-100 group-focus-within/gloss:opacity-100",
+          "pointer-events-none absolute top-full z-30 mt-1.5 w-max max-w-[min(16rem,80vw)] rounded-md bg-fg px-2.5 py-1.5 text-left text-sm font-medium normal-case leading-snug tracking-normal text-bg shadow-lg",
+          "hidden group-hover/gloss:block group-focus-within/gloss:block",
+          // When the term sits inside a button or link, show the tooltip while that element has keyboard focus.
+          !focusable && "in-focus-visible:block",
           align === "center" && "left-1/2 -translate-x-1/2",
           align === "left" && "left-0",
           align === "right" && "right-0",

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-18T01:08:12+00:00",
+ "generatedAt": "2026-11-18T06:22:35+00:00",
  "seasonRange": [
   2002,
   2027
@@ -10,11 +10,11 @@
   "seasons": 26,
   "games": 932,
   "playerSeasonStats": 347,
-  "playerGameStats": 828
+  "playerGameStats": 839
  },
  "http": {
-  "liveRequests": 33,
-  "cacheHits": 794
+  "liveRequests": 827,
+  "cacheHits": 0
  },
  "errors": [],
  "rosterReconciliation": {
