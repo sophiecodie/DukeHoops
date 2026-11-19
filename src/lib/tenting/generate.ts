@@ -1,5 +1,6 @@
 import type { Dataset, Game, Player, PlayerSeasonStats } from "@/lib/types";
 import { seasonLabel } from "@/lib/stats";
+import { byGameDate, formatGameDay } from "@/lib/dates";
 import { seededShuffle, type QuizQuestion } from "./types";
 
 /**
@@ -8,8 +9,7 @@ import { seededShuffle, type QuizQuestion } from "./types";
  * Every answer comes from the data, never written by hand, so it updates with each ingestion run.
  */
 
-const dateFmt = (iso: string | null) =>
-  iso ? new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "America/New_York" }) : "date TBD";
+const dateFmt = (iso: string | null) => formatGameDay(iso) ?? "date TBD";
 const place = (p: Player) => p.birthPlace?.replace(/, USA$/, "") ?? null;
 const schoolName = (opp: string | null) => opp ?? "Unknown opponent";
 
@@ -64,7 +64,7 @@ export function generateSeasonQuestions(ds: Dataset, year: number): QuizQuestion
   // ------------------------------------------------------------ results
   const games: Game[] = ds.games
     .filter((g) => g.season === year && g.completed && g.dukeScore !== null && g.opponentScore !== null)
-    .sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
+    .sort(byGameDate);
 
   for (const g of games) {
     const where = g.neutralSite ? "on a neutral court" : g.homeAway === "away" ? "on the road" : "at home";

@@ -56,6 +56,7 @@ def season_rows(seasons: list[dict], champs: set[int]) -> Iterable[dict]:
             "season": s["season"], "label": s["label"], "coach_name": s["coach"], "wins": s["wins"],
             "losses": s["losses"], "record_is_computed": s["recordIsComputed"],
             "conference_record": s["conferenceRecord"], "games_scheduled": s["gamesScheduled"],
+            "conference_record_is_curated": bool(s.get("conferenceRecordIsCurated")),
             "is_current": s["isCurrent"], "ncaa_champion": s["season"] in champs, "source": s["source"],
         }
 
@@ -68,7 +69,10 @@ def roster_rows(rosters: list[dict]) -> Iterable[dict]:
 def game_rows(games: list[dict]) -> Iterable[dict]:
     for g in games:
         yield {
-            "id": g["id"], "espn_id": g["espnId"], "season": g["season"], "game_date": g["date"],
+            "id": g["id"], "espn_id": g["espnId"], "season": g["season"],
+            # a date-only (tip time unknown) game is stored as 00:00 UTC that day; time_unknown says to ignore the time
+            "game_date": f"{g['date']}T00:00:00Z" if g.get("timeUnknown") else g["date"],
+            "is_curated": bool(g.get("isCurated")), "time_unknown": bool(g.get("timeUnknown")),
             "opponent_name": g["opponent"], "opponent_logo": g["opponentLogo"], "home_away": g["homeAway"],
             "neutral_site": g["neutralSite"], "duke_score": to_int(g["dukeScore"]),
             "opponent_score": to_int(g["opponentScore"]), "result": g["result"], "completed": g["completed"],

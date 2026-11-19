@@ -47,6 +47,7 @@ export interface Season {
   losses: Nullable<number>;
   recordIsComputed: boolean;
   conferenceRecord: Nullable<string>;
+  conferenceRecordIsCurated?: boolean; // true when ESPN lacked it and we used data/curated/game_corrections.json
   gamesScheduled: number;
   isCurrent: boolean;
   source: SourceRef;
@@ -54,9 +55,12 @@ export interface Season {
 
 export interface Game {
   id: string;
-  espnId: string;
+  espnId: Nullable<string>; // null for curated games ESPN doesn't have
   season: number;
+  /** UTC timestamp, or "YYYY-MM-DD" when `timeUnknown` (format with src/lib/dates.ts, not `new Date`). */
   date: Nullable<string>;
+  timeUnknown?: boolean;
+  isCurated?: boolean; // from data/curated/game_corrections.json, not ESPN
   opponent: Nullable<string>;
   opponentEspnId: Nullable<string>;
   opponentLogo: Nullable<string>;

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-18T06:22:35+00:00",
+ "generatedAt": "2026-11-19T00:01:15+00:00",
  "seasonRange": [
   2002,
   2027
@@ -8,13 +8,13 @@
   "players": 194,
   "rosters": 382,
   "seasons": 26,
-  "games": 932,
+  "games": 933,
   "playerSeasonStats": 347,
   "playerGameStats": 839
  },
  "http": {
-  "liveRequests": 827,
-  "cacheHits": 0
+  "liveRequests": 32,
+  "cacheHits": 795
  },
  "errors": [],
  "rosterReconciliation": {
@@ -77,6 +77,21 @@
   "added": [
    "Jalen Johnson 2020-21"
   ]
+ },
+ "scheduleDedup": {
+  "dropped": [
+   "2012-13 2012-11-22 Minnesota Golden Gophers 89-71: dropped duplicate 323270135, kept 400408525"
+  ],
+  "warnings": []
+ },
+ "curatedCorrections": {
+  "applied": [
+   "game 2001-02 2001-11-21 Ball State Cardinals 83-71",
+   "game 2001-02 2002-01-02 Davidson Wildcats 106-71",
+   "conference record 2001-02 ACC 13-3"
+  ],
+  "superseded": [],
+  "warnings": []
  },
  "sources": [
   {

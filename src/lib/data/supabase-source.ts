@@ -78,6 +78,7 @@ export async function loadFromSupabase(): Promise<Omit<Dataset, "championships" 
     losses: n(r.losses),
     recordIsComputed: Boolean(r.record_is_computed),
     conferenceRecord: s(r.conference_record),
+    ...(r.conference_record_is_curated ? { conferenceRecordIsCurated: true } : {}),
     gamesScheduled: Number(r.games_scheduled ?? 0),
     isCurrent: Boolean(r.is_current),
     source: srcOf(r.source),
@@ -85,9 +86,12 @@ export async function loadFromSupabase(): Promise<Omit<Dataset, "championships" 
 
   const games: Game[] = gRows.map((r) => ({
     id: String(r.id),
-    espnId: String(r.espn_id),
+    espnId: s(r.espn_id),
     season: Number(r.season),
-    date: s(r.game_date),
+    // time_unknown games store 00:00 UTC; hand the app the calendar day only, like the JSON backend
+    date: r.time_unknown ? (s(r.game_date)?.slice(0, 10) ?? null) : s(r.game_date),
+    ...(r.time_unknown ? { timeUnknown: true } : {}),
+    ...(r.is_curated ? { isCurated: true } : {}),
     opponent: s(r.opponent_name),
     opponentEspnId: null,
     opponentLogo: s(r.opponent_logo),

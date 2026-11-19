@@ -48,6 +48,13 @@ jobs:
             python ingestion/espn_ingest.py --refresh-current
           fi
 
+      - name: Validate season records against Sports-Reference
+        # Exits 1 on any mismatch or unparseable page, which fails the job here,
+        # so nothing is loaded into Supabase or committed. The in-progress season is skipped.
+        # Sports-Reference pages are cached in ingestion/.cache (restored above), so most
+        # runs make 0 requests; a cold cache makes ~25 requests at 3.5s each (~90s).
+        run: python ingestion/validate_records.py
+
       - name: Load into Supabase
         if: ${{ env.SUPABASE_URL != '' }}
         env:

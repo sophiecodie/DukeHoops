@@ -56,7 +56,7 @@ export default async function SeasonPage({ params }: PageProps<"/seasons/[season
 
       <section aria-label="Season summary" className="grid grid-cols-2 gap-3 md:grid-cols-5">
         <StatTile label="Overall" value={season.wins !== null ? `${season.wins}-${season.losses}` : "—"} hint={season.recordIsComputed ? "Computed from results" : undefined} />
-        <StatTile label="ACC" value={season.conferenceRecord ?? "—"} />
+        <StatTile label="ACC" value={season.conferenceRecord ?? "—"} hint={season.conferenceRecordIsCurated ? "Curated (not in ESPN's feed)" : undefined} />
         <StatTile label="Home" value={home.length ? `${homeW}-${home.length - homeW}` : "—"} />
         <StatTile label="Points / game" value={done.length ? fmt(pf / done.length) : "—"} />
         <StatTile label="Allowed / game" value={done.length ? fmt(pa / done.length) : "—"} hint={done.length ? `Margin ${fmt((pf - pa) / done.length)}` : undefined} />
@@ -130,7 +130,11 @@ export default async function SeasonPage({ params }: PageProps<"/seasons/[season
         </Card>
       </div>
 
-      <DataNote>Source: <a className="underline" href={season.source.url} target="_blank" rel="noopener noreferrer">ESPN schedule feed</a>, retrieved {new Date(season.source.retrievedAt).toLocaleDateString()}. News and historical context for each season are planned (see TODO.md).</DataNote>
+      <DataNote>Source: <a className="underline" href={season.source.url} target="_blank" rel="noopener noreferrer">ESPN schedule feed</a>, retrieved {new Date(season.source.retrievedAt).toLocaleDateString()}.
+        {(season.conferenceRecordIsCurated || games.some((g) => g.isCurated)) && (
+          <> Data marked &ldquo;curated&rdquo; is missing from ESPN&rsquo;s feed and was added by hand from Sports-Reference and GoDuke.com (see <code>data/curated/game_corrections.json</code>).</>
+        )}{" "}
+        News and historical context for each season are planned (see TODO.md).</DataNote>
     </div>
   );
 }

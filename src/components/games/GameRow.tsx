@@ -1,9 +1,15 @@
 import type { Game } from "@/lib/types";
+import { formatGameDay } from "@/lib/dates";
 import { Badge, cn } from "@/components/ui/primitives";
 
 export function formatGameDate(iso: string | null, opts: Intl.DateTimeFormatOptions = { month: "short", day: "numeric" }): string {
-  if (!iso) return "TBD";
-  return new Date(iso).toLocaleDateString("en-US", { ...opts, timeZone: "America/New_York" });
+  return formatGameDay(iso, opts) ?? "TBD";
+}
+
+function tipTime(game: Game): string {
+  if (!game.date) return "TBD";
+  if (game.timeUnknown) return "Time unknown";
+  return new Date(game.date).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }) + " ET";
 }
 
 export function GameRow({ game, showYear = false }: { game: Game; showYear?: boolean }) {
@@ -15,7 +21,20 @@ export function GameRow({ game, showYear = false }: { game: Game; showYear?: boo
         <span className="block truncate font-semibold text-fg">
           <abbr title={prefix === "@" ? "Away game" : game.neutralSite ? "Neutral-site game" : "Home game"} className="cursor-help no-underline">{prefix}</abbr> {game.opponent ?? "Unknown opponent"}
         </span>
-        {game.note && <span className="block truncate text-xs text-muted">{game.note}</span>}
+        {(game.note || game.isCurated) && (
+          <span className="block truncate text-xs text-muted">
+            {game.note}
+            {game.isCurated && (
+              <>
+                {game.note && " · "}
+                <abbr title={`Missing from ESPN's feed; added from ${game.source.name.replace(/^Curated: /, "")}`} className="cursor-help no-underline">
+                  curated
+                </abbr>
+                {game.timeUnknown && " · time unknown"}
+              </>
+            )}
+          </span>
+        )}
       </span>
       {game.seasonType === "postseason" && <Badge tone="brand">Postseason</Badge>}
       {game.result ? (
@@ -23,9 +42,7 @@ export function GameRow({ game, showYear = false }: { game: Game; showYear?: boo
           {game.result} {game.dukeScore}-{game.opponentScore}
         </span>
       ) : (
-        <span className="w-20 shrink-0 text-right text-xs text-muted">
-          {game.date ? new Date(game.date).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }) + " ET" : "TBD"}
-        </span>
+        <span className="w-20 shrink-0 text-right text-xs text-muted">{tipTime(game)}</span>
       )}
     </div>
   );

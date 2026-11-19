@@ -23,6 +23,7 @@ import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).parent))
 from http_client import HttpClient  # noqa: E402
@@ -38,6 +39,11 @@ GAMELOG_SEASONS_BACK = 3  # fetch per-game logs for the most recent N seasons
 
 OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "generated"
 NOW = datetime.now(timezone.utc).isoformat(timespec="seconds")
+ET = ZoneInfo("America/New_York")  # game dates are UTC; group duplicates by local (ET) calendar day
+CORRECTIONS_PATH = OUT_DIR.parent / "curated" / "game_corrections.json"
+DATE_ONLY_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+TIME_RE = re.compile(r"^\d{2}:\d{2}$")
+WL_RE = re.compile(r"^\d+-\d+$")
 
 
 def current_season_end_year(today: datetime | None = None) -> int:
@@ -160,6 +166,179 @@ def fetch_schedule(http: HttpClient, season: int, refresh: bool) -> list[dict]:
                 "source": src(url),
             }
     return sorted(games.values(), key=lambda g: g["date"] or "")
+
+
+def _et_day(iso: str | None) -> str | None:
+    if not iso:
+        return None
+    if DATE_ONLY_RE.match(iso):  # curated game with unknown tip time: already a calendar day
+        return iso
+    return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(ET).date().isoformat()
+
+
+def game_sort_key(iso: str | None) -> str:
+    """Chronological sort key in ESPN's "YYYY-MM-DDTHH:MMZ" format. A date-only (tip time unknown) game
+    sorts at noon ET on its day, so it lands after an evening-ET game from the day before."""
+    if iso and DATE_ONLY_RE.match(iso):
+        noon_et = datetime.fromisoformat(f"{iso}T12:00").replace(tzinfo=ET)
+        return noon_et.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%MZ")
+    return iso or ""
+
+
+def _filled(g: dict) -> int:
+    return sum(1 for v in g.values() if v is not None)
+
+
+def dedupe_games(games: list[dict]) -> tuple[list[dict], dict[str, str], dict[str, list[str]]]:
+    """ESPN sometimes publishes one real game under two event IDs (e.g. 2012-11-22 vs Minnesota,
+    323270135 and 400408525). fetch_schedule() only dedupes by event ID, so collapse games that share the
+    same ET date, opponent, and both final scores, keeping the copy with the most fields filled in.
+
+    Same date + opponent but different or missing scores: keep both and record a warning, because that may
+    be a real data conflict rather than a duplicate.
+
+    Returns (kept games, {dropped game id: kept game id}, log).
+    """
+    groups: dict[tuple, list[dict]] = {}
+    for g in games:
+        groups.setdefault((g["season"], _et_day(g["date"]), g["opponentEspnId"]), []).append(g)
+
+    kept: list[dict] = []
+    remap: dict[str, str] = {}
+    dlog: dict[str, list[str]] = {"dropped": [], "warnings": []}
+    for (season, day, _), group in groups.items():
+        if len(group) == 1 or day is None:
+            kept.extend(group)
+            continue
+        scores = {(g["dukeScore"], g["opponentScore"]) for g in group}
+        all_scored = all(g["dukeScore"] is not None and g["opponentScore"] is not None for g in group)
+        ids = ", ".join(g["espnId"] for g in group)
+        if len(scores) == 1 and all_scored:
+            best = max(group, key=lambda g: (_filled(g), g["espnId"]))
+            kept.append(best)
+            for g in group:
+                if g is not best:
+                    remap[g["id"]] = best["id"]
+                    dlog["dropped"].append(
+                        f"{season_label(season)} {day} {g['opponent']} {g['dukeScore']:g}-{g['opponentScore']:g}: "
+                        f"dropped duplicate {g['espnId']}, kept {best['espnId']}"
+                    )
+        else:
+            kept.extend(group)
+            dlog["warnings"].append(
+                f"{season_label(season)} {day} {group[0]['opponent']}: {len(group)} events ({ids}) with "
+                f"different or missing scores {sorted(scores, key=str)}; kept all"
+            )
+    for line in dlog["dropped"]:
+        log.info("  schedule dedup: %s", line)
+    for line in dlog["warnings"]:
+        log.warning("  schedule dedup: %s", line)
+    return sorted(kept, key=lambda g: (g["season"], game_sort_key(g["date"]))), remap, dlog
+
+
+def load_corrections(path: Path = CORRECTIONS_PATH) -> dict:
+    """Read data/curated/game_corrections.json. Fails loudly on a malformed entry: a bad correction
+    should stop the run rather than quietly change a season record."""
+    if not path.exists():
+        return {"games": [], "seasons": [], "verifiedAt": None}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    verified = (doc.get("_source") or {}).get("verifiedAt")
+    for c in doc.get("games", []):
+        where = f"{path.name}: game {c.get('date')} {c.get('opponent')}"
+        if not DATE_ONLY_RE.match(str(c.get("date"))):
+            raise ValueError(f"{where}: date must be YYYY-MM-DD")
+        if c.get("tipTimeET") is not None and not TIME_RE.match(str(c["tipTimeET"])):
+            raise ValueError(f"{where}: tipTimeET must be HH:MM (24h, Eastern) or null")
+        if not isinstance(c.get("dukeScore"), int) or not isinstance(c.get("opponentScore"), int):
+            raise ValueError(f"{where}: dukeScore and opponentScore must be integers")
+        if c.get("seasonType") not in ("regular", "postseason"):
+            raise ValueError(f"{where}: seasonType must be 'regular' or 'postseason'")
+        for k in ("season", "opponent", "opponentEspnId"):
+            if not c.get(k):
+                raise ValueError(f"{where}: missing {k}")
+        if len(c.get("citations") or []) < 2:
+            raise ValueError(f"{where}: needs at least two citations")
+    for c in doc.get("seasons", []):
+        if not WL_RE.match(str(c.get("conferenceRecord"))) or len(c.get("citations") or []) < 2:
+            raise ValueError(f"{path.name}: season {c.get('season')} needs a W-L conferenceRecord and two citations")
+    return {"games": doc.get("games", []), "seasons": doc.get("seasons", []), "verifiedAt": verified}
+
+
+def curated_game(c: dict, verified_at: str | None) -> dict:
+    if c.get("tipTimeET"):
+        local = datetime.fromisoformat(f"{c['date']}T{c['tipTimeET']}").replace(tzinfo=ET)
+        date, time_unknown = local.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%MZ"), False
+    else:
+        date, time_unknown = c["date"], True
+    return {
+        "id": f"curated-{c['date']}-{slugify(c['opponent'])}",
+        "espnId": None,
+        "season": c["season"],
+        "date": date,
+        "timeUnknown": time_unknown,
+        "opponent": c["opponent"],
+        "opponentEspnId": c["opponentEspnId"],
+        "opponentLogo": None,
+        "homeAway": c.get("homeAway"),
+        "neutralSite": bool(c.get("neutralSite")),
+        "dukeScore": float(c["dukeScore"]),
+        "opponentScore": float(c["opponentScore"]),
+        "result": "W" if c["dukeScore"] > c["opponentScore"] else "L",
+        "completed": True,
+        "seasonType": c["seasonType"],
+        "note": c.get("note"),
+        "venue": c.get("venue"),
+        "isCurated": True,
+        "source": {
+            "name": "Curated: " + " + ".join(x["name"] for x in c["citations"]),
+            "url": c["citations"][0]["url"],
+            "retrievedAt": verified_at or NOW,
+        },
+    }
+
+
+def apply_game_corrections(sched: list[dict], corrections: dict, season: int, clog: dict[str, list[str]]) -> list[dict]:
+    """Add curated games ESPN is missing. If ESPN has a game on that ET day vs that opponent, ESPN wins:
+    same score → the correction is redundant (logged as superseded); different score → warning."""
+    out = list(sched)
+    for c in (c for c in corrections["games"] if c["season"] == season):
+        label = f"{season_label(season)} {c['date']} {c['opponent']} {c['dukeScore']}-{c['opponentScore']}"
+        espn = [g for g in sched if _et_day(g["date"]) == c["date"] and g["opponentEspnId"] == c["opponentEspnId"]]
+        if not espn:
+            out.append(curated_game(c, corrections["verifiedAt"]))
+            clog["applied"].append(f"game {label}")
+        elif any(g["dukeScore"] == c["dukeScore"] and g["opponentScore"] == c["opponentScore"] for g in espn):
+            clog["superseded"].append(f"game {label}: ESPN now has it ({espn[0]['espnId']}); remove the correction")
+        else:
+            clog["warnings"].append(
+                f"game {label}: ESPN has {espn[0]['espnId']} with {espn[0]['dukeScore']}-{espn[0]['opponentScore']}; kept ESPN")
+    return sorted(out, key=lambda g: game_sort_key(g["date"]))
+
+
+def apply_conf_correction(espn_conf: str | None, corrections: dict, season: int,
+                          clog: dict[str, list[str]]) -> tuple[str | None, bool]:
+    """Returns (conference record, is_curated). Curated value is used only when ESPN's is null."""
+    c = next((c for c in corrections["seasons"] if c["season"] == season), None)
+    if c is None:
+        return espn_conf, False
+    label = f"{season_label(season)} ACC {c['conferenceRecord']}"
+    if espn_conf is None:
+        clog["applied"].append(f"conference record {label}")
+        return c["conferenceRecord"], True
+    if espn_conf == c["conferenceRecord"]:
+        clog["superseded"].append(f"conference record {label}: ESPN now has it; remove the correction")
+    else:
+        clog["warnings"].append(f"conference record {label}: ESPN has {espn_conf}; kept ESPN")
+    return espn_conf, False
+
+
+def remap_game_logs(game_logs: list[dict], remap: dict[str, str]) -> list[dict]:
+    """Point player game-log rows at the kept game ID and drop rows that become duplicates."""
+    out: dict[tuple[str, str], dict] = {}
+    for row in game_logs:
+        row = {**row, "gameId": remap.get(row["gameId"], row["gameId"])}
+        out.setdefault((row["playerId"], row["gameId"]), row)
+    return list(out.values())
 
 
 AVG_KEYS = ["gp", "gs", "min", "fg", "fgPct", "tp", "tpPct", "ft", "ftPct", "oreb", "dreb", "reb", "ast", "blk", "stl", "pf", "tov", "pts"]
@@ -321,6 +500,10 @@ def main() -> int:
     players: dict[str, dict] = {}  # espnId -> player
     slug_owner: dict[str, str] = {}  # slug -> espnId (collision handling)
     rosters, seasons, games = [], [], []
+    game_id_remap: dict[str, str] = {}  # dropped duplicate game id -> kept game id
+    dedup_log: dict[str, list[str]] = {"dropped": [], "warnings": []}
+    corrections = load_corrections()
+    corr_log: dict[str, list[str]] = {"applied": [], "superseded": [], "warnings": []}
 
     for season in range(args.start, args.end + 1):
         refresh = args.refresh_current and season == current
@@ -370,22 +553,30 @@ def main() -> int:
                 "source": src(f"{CORE}/seasons/{season}/teams/{DUKE_ESPN_ID}/athletes"),
             })
 
-        sched = fetch_schedule(http, season, refresh)
+        sched, remap, dlog = dedupe_games(fetch_schedule(http, season, refresh))
+        game_id_remap.update(remap)
+        for k in dedup_log:
+            dedup_log[k].extend(dlog[k])
+        sched = apply_game_corrections(sched, corrections, season, corr_log)
         games.extend(sched)
         done = [g for g in sched if g["result"]]
         wins = sum(1 for g in done if g["result"] == "W")
-        seasons.append({
+        conf, conf_curated = apply_conf_correction(fetch_conf_record(http, season, refresh), corrections, season, corr_log)
+        season_row = {
             "season": season,
             "label": season_label(season),
             "coach": fetch_coach(http, season),
             "wins": wins if done else None,
             "losses": (len(done) - wins) if done else None,
             "recordIsComputed": True,  # derived from completed games in schedule
-            "conferenceRecord": fetch_conf_record(http, season, refresh),
+            "conferenceRecord": conf,
             "gamesScheduled": len(sched),
             "isCurrent": season == current,
             "source": src(f"{SITE}/teams/{DUKE_ESPN_ID}/schedule?season={season}"),
-        })
+        }
+        if conf_curated:
+            season_row["conferenceRecordIsCurated"] = True
+        seasons.append(season_row)
 
     season_stats, game_logs = [], []
     log.info("Fetching season stats for %d players", len(players))
@@ -410,6 +601,7 @@ def main() -> int:
                     game_logs.extend(fetch_gamelog(http, espn_id, p["id"], s, refresh))
                 except Exception as exc:
                     errors.append(f"gamelog {p['fullName']} {s}: {exc}")
+    game_logs = remap_game_logs(game_logs, game_id_remap)
     players = {k: v for k, v in players.items() if v["dukeSeasons"]}
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -432,6 +624,8 @@ def main() -> int:
         "http": {"liveRequests": http.live_requests, "cacheHits": http.cache_hits},
         "errors": errors,
         "rosterReconciliation": recon,
+        "scheduleDedup": dedup_log,
+        "curatedCorrections": corr_log,
         "sources": [{"name": "ESPN (unofficial public JSON API)", "url": "https://site.api.espn.com", "note": "Unofficial endpoints; may change without notice."}],
     }
     write("meta", meta)

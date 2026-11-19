@@ -1,0 +1,442 @@
+{
+ "generatedAt": "2026-11-19T00:10:20+00:00",
+ "reference": {
+  "name": "Sports-Reference (College Basketball Reference)",
+  "urlPattern": "https://www.sports-reference.com/cbb/schools/duke/men/{year}.html"
+ },
+ "checked": 25,
+ "mismatchCount": 0,
+ "errorCount": 0,
+ "skippedInProgress": [
+  "2026-27"
+ ],
+ "mismatches": [],
+ "errors": [],
+ "seasons": [
+  {
+   "season": 2002,
+   "label": "2001-02",
+   "ours": {
+    "overall": "31-4",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2002"
+   },
+   "sportsReference": {
+    "overall": "31-4",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2002.html"
+  },
+  {
+   "season": 2003,
+   "label": "2002-03",
+   "ours": {
+    "overall": "26-7",
+    "acc": "11-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2003"
+   },
+   "sportsReference": {
+    "overall": "26-7",
+    "acc": "11-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2003.html"
+  },
+  {
+   "season": 2004,
+   "label": "2003-04",
+   "ours": {
+    "overall": "31-6",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2004"
+   },
+   "sportsReference": {
+    "overall": "31-6",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2004.html"
+  },
+  {
+   "season": 2005,
+   "label": "2004-05",
+   "ours": {
+    "overall": "27-6",
+    "acc": "11-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2005"
+   },
+   "sportsReference": {
+    "overall": "27-6",
+    "acc": "11-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2005.html"
+  },
+  {
+   "season": 2006,
+   "label": "2005-06",
+   "ours": {
+    "overall": "32-4",
+    "acc": "14-2",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2006"
+   },
+   "sportsReference": {
+    "overall": "32-4",
+    "acc": "14-2"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2006.html"
+  },
+  {
+   "season": 2007,
+   "label": "2006-07",
+   "ours": {
+    "overall": "22-11",
+    "acc": "8-8",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2007"
+   },
+   "sportsReference": {
+    "overall": "22-11",
+    "acc": "8-8"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2007.html"
+  },
+  {
+   "season": 2008,
+   "label": "2007-08",
+   "ours": {
+    "overall": "28-6",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2008"
+   },
+   "sportsReference": {
+    "overall": "28-6",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2008.html"
+  },
+  {
+   "season": 2009,
+   "label": "2008-09",
+   "ours": {
+    "overall": "30-7",
+    "acc": "11-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2009"
+   },
+   "sportsReference": {
+    "overall": "30-7",
+    "acc": "11-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2009.html"
+  },
+  {
+   "season": 2010,
+   "label": "2009-10",
+   "ours": {
+    "overall": "35-5",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2010"
+   },
+   "sportsReference": {
+    "overall": "35-5",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2010.html"
+  },
+  {
+   "season": 2011,
+   "label": "2010-11",
+   "ours": {
+    "overall": "32-5",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2011"
+   },
+   "sportsReference": {
+    "overall": "32-5",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2011.html"
+  },
+  {
+   "season": 2012,
+   "label": "2011-12",
+   "ours": {
+    "overall": "27-7",
+    "acc": "13-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2012"
+   },
+   "sportsReference": {
+    "overall": "27-7",
+    "acc": "13-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2012.html"
+  },
+  {
+   "season": 2013,
+   "label": "2012-13",
+   "ours": {
+    "overall": "30-6",
+    "acc": "14-4",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2013"
+   },
+   "sportsReference": {
+    "overall": "30-6",
+    "acc": "14-4"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2013.html"
+  },
+  {
+   "season": 2014,
+   "label": "2013-14",
+   "ours": {
+    "overall": "26-9",
+    "acc": "13-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2014"
+   },
+   "sportsReference": {
+    "overall": "26-9",
+    "acc": "13-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2014.html"
+  },
+  {
+   "season": 2015,
+   "label": "2014-15",
+   "ours": {
+    "overall": "35-4",
+    "acc": "15-3",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2015"
+   },
+   "sportsReference": {
+    "overall": "35-4",
+    "acc": "15-3"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2015.html"
+  },
+  {
+   "season": 2016,
+   "label": "2015-16",
+   "ours": {
+    "overall": "25-11",
+    "acc": "11-7",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2016"
+   },
+   "sportsReference": {
+    "overall": "25-11",
+    "acc": "11-7"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2016.html"
+  },
+  {
+   "season": 2017,
+   "label": "2016-17",
+   "ours": {
+    "overall": "28-9",
+    "acc": "11-7",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2017"
+   },
+   "sportsReference": {
+    "overall": "28-9",
+    "acc": "11-7"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2017.html"
+  },
+  {
+   "season": 2018,
+   "label": "2017-18",
+   "ours": {
+    "overall": "29-8",
+    "acc": "13-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2018"
+   },
+   "sportsReference": {
+    "overall": "29-8",
+    "acc": "13-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2018.html"
+  },
+  {
+   "season": 2019,
+   "label": "2018-19",
+   "ours": {
+    "overall": "32-6",
+    "acc": "14-4",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2019"
+   },
+   "sportsReference": {
+    "overall": "32-6",
+    "acc": "14-4"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2019.html"
+  },
+  {
+   "season": 2020,
+   "label": "2019-20",
+   "ours": {
+    "overall": "25-6",
+    "acc": "15-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2020"
+   },
+   "sportsReference": {
+    "overall": "25-6",
+    "acc": "15-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2020.html"
+  },
+  {
+   "season": 2021,
+   "label": "2020-21",
+   "ours": {
+    "overall": "13-11",
+    "acc": "9-9",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2021"
+   },
+   "sportsReference": {
+    "overall": "13-11",
+    "acc": "9-9"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2021.html"
+  },
+  {
+   "season": 2022,
+   "label": "2021-22",
+   "ours": {
+    "overall": "32-7",
+    "acc": "16-4",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2022"
+   },
+   "sportsReference": {
+    "overall": "32-7",
+    "acc": "16-4"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2022.html"
+  },
+  {
+   "season": 2023,
+   "label": "2022-23",
+   "ours": {
+    "overall": "27-9",
+    "acc": "14-6",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2023"
+   },
+   "sportsReference": {
+    "overall": "27-9",
+    "acc": "14-6"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2023.html"
+  },
+  {
+   "season": 2024,
+   "label": "2023-24",
+   "ours": {
+    "overall": "27-9",
+    "acc": "15-5",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2024"
+   },
+   "sportsReference": {
+    "overall": "27-9",
+    "acc": "15-5"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2024.html"
+  },
+  {
+   "season": 2025,
+   "label": "2024-25",
+   "ours": {
+    "overall": "35-4",
+    "acc": "19-1",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2025"
+   },
+   "sportsReference": {
+    "overall": "35-4",
+    "acc": "19-1"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2025.html"
+  },
+  {
+   "season": 2026,
+   "label": "2025-26",
+   "ours": {
+    "overall": "35-3",
+    "acc": "17-1",
+    "source": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2026"
+   },
+   "sportsReference": {
+    "overall": "35-3",
+    "acc": "17-1"
+   },
+   "overallDiff": null,
+   "accDiff": null,
+   "status": "ok",
+   "sourceUrl": "https://www.sports-reference.com/cbb/schools/duke/men/2026.html"
+  }
+ ]
+}

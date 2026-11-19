@@ -19,7 +19,7 @@ Legend: ✅ done · 🔜 next · ⏳ later · 🔑 needs credentials or permissi
 - ✅ Stat-based search ("over 20 points and 5 rebounds")
 - 🔜 Pre-2002 history (1905-06 → 2000-01): Sports-Reference, low-volume and cached, or a licensed/CSV export.
   Include Laettner, Hurley, Hill, Battier, J. Williams era stats, and the 1991/1992/2001 title rosters
-- 🔜 Cross-check computed season records against the NCAA record book (2001-02 computes 29-4 from ESPN; the official record should be confirmed)
+- ✅ Cross-check computed season records against Sports-Reference (`ingestion/validate_records.py`); 2012-13 duplicate removed, 2001-02 gaps filled from `data/curated/game_corrections.json`
 - 🔜 Per-season class year and jersey (ESPN gives only the latest values)
 - 🔜 Game detail page (`/games/[id]`) with the full Duke box score (ESPN `summary?event=` endpoint)
 - 🔜 Team season stats table (pace, ORtg/DRtg from BartTorvik, subject to terms)
@@ -51,6 +51,8 @@ Legend: ✅ done · 🔜 next · ⏳ later · 🔑 needs credentials or permissi
 - ⏳ Move hot queries to SQL/RPC when the dataset outgrows in-memory loading
 
 ## Tech debt / polish
+- ⏳ `espn_ingest.py --from/--to` rewrites every output file with only that range, wiping the other seasons. Merge into the existing JSON instead (or refuse partial runs)
+- ⏳ `fetch_coach()` ignores `--refresh-current`, so the current season's coach is always served from cache
 - ⏳ Unit tests for `stats.ts` (careerLine null handling, TS%/eFG%) and `parseStatQuery`
 - ⏳ Playwright smoke tests for the main pages
 - ⏳ Single-season players: show a bar chart instead of a one-point line

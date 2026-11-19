@@ -13,6 +13,7 @@ Status as of 2026-11-17.
 | NBA draft | ESPN core API `leagues/nba/seasons/{y}/draft/rounds` | JSON | None | ⏳ Phase 3 (verified endpoint works) |
 | NBA career stats | `nba_api` (stats.nba.com) | JSON via Python package | None (but stats.nba.com blocks some cloud IPs; may need retries/proxy-free runner) | ⏳ Phase 3 |
 | NBA career stats | Basketball-Reference | HTML | None; same scraping limits as Sports-Reference | ⏳ Phase 3 fallback |
+| Schedules/results (corrections only) | GoDuke.com schedule pages | HTML | None; robots.txt sets **`Crawl-delay: 30`** | ✅ Cited in `data/curated/game_corrections.json`; any automated GoDuke fetch must wait ≥30s |
 | News | **GoDuke.com RSS** `https://goduke.com/rss?path=mbball` | RSS 2.0 | None | ✅ Verified feed returns MBB stories; ingestion in Phase 3 |
 | News | The Duke Chronicle | RSS (WordPress/SNworks) | None | ⚠️ Returned **403** to automated requests; needs the official feed URL or permission |
 | News | Duke Today | RSS | None | ⚠️ `/feed` 404s; need correct feed path |
@@ -49,8 +50,15 @@ Coverage: **2001-02 → present** (ESPN has no Duke rosters before 2002).
   truth; every drop/add is logged in `data/generated/meta.json → rosterReconciliation`.
 - **Bio fields are "latest" values**: ESPN returns the player's most recent jersey, height, and class,
   not per-season values. Per-season class year is left `null` until a reliable source is added.
-- **Early-2000s schedules can be incomplete** in ESPN's feed (for example, 2001-02 computes to 29-4). Records are labeled
-  "computed from results" until cross-checked with the NCAA record book.
+- **Early-2000s schedules can be incomplete** in ESPN's feed. 2001-02 is missing two games (Ball State 11/21,
+  Davidson 1/2) and its ACC record. These are filled from `data/curated/game_corrections.json` (cited to
+  Sports-Reference and GoDuke.com) and flagged `isCurated` / `conferenceRecordIsCurated`; tip times are unknown
+  (`timeUnknown`, date stored as `YYYY-MM-DD`). ESPN data always wins if it appears later.
+- **Duplicate events**: ESPN sometimes lists one game under two event IDs (2012-11-22 vs Minnesota).
+  `dedupe_games()` collapses games with the same ET date, opponent, and both scores, and logs each drop in
+  `meta.json → scheduleDedup`. Same date and opponent with different scores is kept and logged as a warning.
+- **Record cross-check**: `ingestion/validate_records.py` compares every completed season's overall and ACC
+  record with Sports-Reference (report in `ingestion/reports/`).
 - **Head coach** is missing from ESPN before 2013-14; it's filled from `data/curated/coaches.json` and
   flagged `coachIsCurated`.
 - **Advanced metrics**: only box-score-derivable ones (TS%, eFG%, AST/TO, FTr, 3PAr) are calculated

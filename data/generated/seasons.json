@@ -3,17 +3,18 @@
   "season": 2002,
   "label": "2001-02",
   "coach": null,
-  "wins": 29,
+  "wins": 31,
   "losses": 4,
   "recordIsComputed": true,
-  "conferenceRecord": null,
-  "gamesScheduled": 33,
+  "conferenceRecord": "13-3",
+  "gamesScheduled": 35,
   "isCurrent": false,
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2002",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
-  }
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
+  },
+  "conferenceRecordIsCurated": true
  },
  {
   "season": 2003,
@@ -28,7 +29,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2003",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -44,7 +45,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2004",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -60,7 +61,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2005",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -76,7 +77,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2006",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -92,7 +93,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2007",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -108,7 +109,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2008",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -124,7 +125,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2009",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -140,7 +141,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2010",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -156,7 +157,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2011",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -172,23 +173,23 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2012",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
   "season": 2013,
   "label": "2012-13",
   "coach": null,
-  "wins": 31,
+  "wins": 30,
   "losses": 6,
   "recordIsComputed": true,
   "conferenceRecord": "14-4",
-  "gamesScheduled": 37,
+  "gamesScheduled": 36,
   "isCurrent": false,
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2013",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -204,7 +205,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2014",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -220,7 +221,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2015",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -236,7 +237,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2016",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -252,7 +253,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2017",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -268,7 +269,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2018",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -284,7 +285,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2019",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -300,7 +301,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2020",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -316,7 +317,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2021",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -332,7 +333,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2022",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -348,7 +349,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2023",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -364,7 +365,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2024",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -380,7 +381,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2025",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -396,7 +397,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2026",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  },
  {
@@ -412,7 +413,7 @@
   "source": {
    "name": "ESPN",
    "url": "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/150/schedule?season=2027",
-   "retrievedAt": "2026-11-18T06:22:35+00:00"
+   "retrievedAt": "2026-11-19T00:01:15+00:00"
   }
  }
 ]

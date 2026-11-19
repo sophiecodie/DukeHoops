@@ -1,4 +1,5 @@
 import { getDataset } from "./dataset";
+import { byGameDate } from "@/lib/dates";
 import { careerLine, seasonLabel, seasonMetric, type CareerLine, type MetricKey } from "@/lib/stats";
 import { CURATED_QUESTIONS } from "@/lib/tenting/curated";
 import { generateSeasonQuestions } from "@/lib/tenting/generate";
@@ -200,7 +201,7 @@ export async function getSeasonDetail(year: number): Promise<SeasonDetail | null
   return {
     season,
     roster,
-    games: [...(ix.gamesBySeason.get(year) ?? [])].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? "")),
+    games: [...(ix.gamesBySeason.get(year) ?? [])].sort(byGameDate),
     champion: ds.championships.some((c) => c.season === year),
     prev: i > 0 ? years[i - 1] : null,
     next: i < years.length - 1 ? years[i + 1] : null,
@@ -229,7 +230,7 @@ export async function getHomeData(): Promise<HomeData> {
   const { ds, ix } = await ctx();
   const currentYear = await getCurrentSeasonYear();
   const current = ix.seasonByYear.get(currentYear) ?? null;
-  const games = [...(ix.gamesBySeason.get(currentYear) ?? [])].sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""));
+  const games = [...(ix.gamesBySeason.get(currentYear) ?? [])].sort(byGameDate);
   const summaries = await listPlayerSummaries();
   const currentRoster = summaries
     .filter((p) => p.isCurrent)
@@ -289,7 +290,7 @@ function buildFacts(ds: Dataset, ix: ReturnType<typeof buildIndexes>): { text: s
 
   // longest winning streak across completed games
   let best = 0, run = 0, bestEnd: Game | null = null;
-  for (const g of [...ds.games].filter((g) => g.result).sort((a, b) => (a.date ?? "").localeCompare(b.date ?? ""))) {
+  for (const g of [...ds.games].filter((g) => g.result).sort(byGameDate)) {
     run = g.result === "W" ? run + 1 : 0;
     if (run > best) { best = run; bestEnd = g; }
   }
@@ -389,7 +390,7 @@ export async function searchAll(q: string, limit = 8): Promise<SearchHit[]> {
   }
 
   if (query.length >= 3) {
-    const games = ds.games.filter((g) => g.opponent && norm(g.opponent).includes(query)).sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")).slice(0, limit);
+    const games = ds.games.filter((g) => g.opponent && norm(g.opponent).includes(query)).sort((a, b) => byGameDate(b, a)).slice(0, limit);
     for (const g of games) {
       hits.push({ kind: "game", id: g.id, title: `${g.homeAway === "away" ? "@" : "vs."} ${g.opponent}`, subtitle: `${g.date?.slice(0, 10) ?? ""} · ${g.result ? `${g.result} ${g.dukeScore}-${g.opponentScore}` : "Scheduled"}`, href: `/seasons/${g.season}#game-${g.id}` });
     }
